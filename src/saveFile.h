@@ -7,17 +7,17 @@
 class SaveFile
 {
 private:
-	int nr;
+	int id;
 	std::string name;
 
 public:
-	SaveFile(int nr, std::string name);
+	SaveFile(int id, std::string name);
 
 	std::string getName();
 	void setName(std::string name);
 
-	int getNr();
-	void setNr(int nr);
+	int getID();
+	void setID(int id);
 
 	bool isEmpty();
 

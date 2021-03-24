@@ -1,11 +1,11 @@
 #include "saveFile.h"
 
-SaveFile::SaveFile(int _nr, std::string _name) : nr(_nr), name(_name) {}
+SaveFile::SaveFile(int _id, std::string _name) : id(_id), name(_name) {}
 
 //Saves REDTMP file into this file
 void SaveFile::save()
 {
-	std::string command = "type \"" + g_REDTMPPath + "\" > \"" + g_savesPath + std::to_string(nr) + ".sav\"";
+	std::string command = "type \"" + g_REDTMPPath + "\" > \"" + g_savesPath + std::to_string(id) + ".sav\"";
 	
 	system(command.c_str());
 }
@@ -15,7 +15,7 @@ bool SaveFile::load()
 {
 	if (isEmpty()) return false;
 
-	std::string command = "type \"" + g_savesPath + std::to_string(nr) + ".sav\" > \"" + g_REDTMPPath + "\"";
+	std::string command = "type \"" + g_savesPath + std::to_string(id) + ".sav\" > \"" + g_REDTMPPath + "\"";
 	system(command.c_str());
 	return true;
 }
@@ -30,14 +30,14 @@ void SaveFile::setName(std::string n)
 	name = n;
 }
 
-int SaveFile::getNr()
+int SaveFile::getID()
 {
-	return nr;
+	return id;
 }
 
-void SaveFile::setNr(int n)
+void SaveFile::setID(int n)
 {
-	nr = n;
+	id = n;
 }
 
 bool SaveFile::isEmpty()
@@ -45,7 +45,7 @@ bool SaveFile::isEmpty()
 	bool ret_value;
 
 	std::ifstream file;
-	file.open(g_savesPath + std::to_string(nr) + ".sav");
+	file.open(g_savesPath + std::to_string(id) + ".sav");
 
 	ret_value = file.peek() == EOF;
 
