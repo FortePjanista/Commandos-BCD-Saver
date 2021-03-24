@@ -23,10 +23,6 @@ public:
 	//Loads this save file into REDTMP
 	//returns false if physical savefile is empty
 	bool load();
-
-private:
-	// Checks whether .sav file is empty
-	bool isEmpty();
 };
 
 #endif //SAVE_FILE_H

@@ -2,23 +2,23 @@
 
 SaveFile::SaveFile(int _id, const std::string& _name) : id(_id), name(_name) {}
 
-
-bool SaveFile::isEmpty()
+namespace
 {
-	bool ret_value;
+	bool isEmpty(int id)
+	{
+		bool ret_value;
 
-	std::ifstream file;
-	file.open(g_savesPath + std::to_string(id) + ".sav");
+		std::ifstream file;
+		file.open(g_savesPath + std::to_string(id) + ".sav");
 
-	ret_value = file.peek() == EOF;
+		ret_value = file.peek() == EOF;
 
-	file.close();
+		file.close();
 
-	return ret_value;
+		return ret_value;
+	}
 }
 
-
-//Saves REDTMP file into this file
 void SaveFile::save()
 {
 	std::string command = "type \"" + g_REDTMPPath + "\" > \"" + g_savesPath + std::to_string(id) + ".sav\"";
@@ -26,10 +26,9 @@ void SaveFile::save()
 	system(command.c_str());
 }
 
-//Loads this file into REDTMP
 bool SaveFile::load()
 {
-	if (isEmpty()) return false;
+	if (isEmpty(id)) return false;
 
 	std::string command = "type \"" + g_savesPath + std::to_string(id) + ".sav\" > \"" + g_REDTMPPath + "\"";
 	system(command.c_str());
