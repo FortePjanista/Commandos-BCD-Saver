@@ -9,9 +9,9 @@ public:
 	MainFrame();
 
 private:
-	wxButton * btn_save;
-	wxButton * btn_load;
-	PickingFrame * pickingFrame;
+	std::unique_ptr<wxButton> btn_save;
+	std::unique_ptr<wxButton> btn_load;
+	std::unique_ptr<PickingFrame> pickingFrame;
 
 public:
 	void OnSaveButtonClicked(wxCommandEvent &evt);
