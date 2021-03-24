@@ -1,0 +1,6 @@
+#Ignore Visual Studio's files
+.vs/
+*.vcxproj.*
+
+#infore compiled output
+bin/
