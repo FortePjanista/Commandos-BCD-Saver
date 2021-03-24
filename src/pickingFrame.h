@@ -12,7 +12,7 @@ public:
 	PickingFrame(wxWindow * parent);
 
 private:
-	constexpr static unsigned int btnsCount = SAVE_FILES_COUNT;
+	constexpr static int btnsCount = SAVE_FILES_COUNT;
 	int mode;
 	std::unique_ptr<wxButton> buttons[btnsCount];
 	std::unique_ptr<PickingNameFrame> pickingNameFrame;

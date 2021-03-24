@@ -1,5 +1,5 @@
 #include "savesHandler.h"
-
+#include "directoriesHandler.h"
 SavesHandler::SavesHandler()
 {
 	for (int i = 0; i < saveFilesAmount; i++)
@@ -19,8 +19,10 @@ SavesHandler::SavesHandler()
 
 void SavesHandler::loadNamesFromInfoFile()
 {
+	auto& dh = DirectoriesHandler::GetInstance();
+
 	std::ifstream file;
-	file.open(g_savesPath + g_InfoFileName);
+	file.open(dh.g_savesPath + dh.g_InfoFileName);
 
 	char buffer[256];
 	for (int i = 0; i < saveFilesAmount; i++)
@@ -33,8 +35,10 @@ void SavesHandler::loadNamesFromInfoFile()
 
 void SavesHandler::saveNamesIntoInfoFile()
 {
+	auto& dh = DirectoriesHandler::GetInstance();
+
 	std::ofstream file;
-	file.open(g_savesPath + g_InfoFileName);
+	file.open(dh.g_savesPath + dh.g_InfoFileName);
 	for (int i = 0; i < saveFilesAmount; i++)
 	{
 		file << names[i] << std::endl;
@@ -45,8 +49,9 @@ void SavesHandler::saveNamesIntoInfoFile()
 bool SavesHandler::isInfoFileCreated()
 {
 	bool ret_value;
+	auto& dh = DirectoriesHandler::GetInstance();
 	std::ifstream file;
-	file.open(g_savesPath + g_InfoFileName);
+	file.open(dh.g_savesPath + dh.g_InfoFileName);
 	ret_value = file.is_open();
 	file.close();
 	return ret_value;
@@ -68,12 +73,13 @@ std::string SavesHandler::getSaveFileName(int _fileID)
 
 void SavesHandler::createEmptyInfoFile()
 {
+	auto& dh = DirectoriesHandler::GetInstance();
 	//Creating a saves folder
-	std::string command = "if not exist \"" + g_savesPath + "\" mkdir \"" + g_savesPath + "\"";
+	std::string command = "if not exist \"" + dh.g_savesPath + "\" mkdir \"" + dh.g_savesPath + "\"";
 	system(command.c_str());
 
 	std::ofstream file;
-	file.open(g_savesPath + g_InfoFileName, std::ofstream::out);
+	file.open(dh.g_savesPath + dh.g_InfoFileName, std::ofstream::out);
 
 	for (int i = 0; i < saveFilesAmount; i++)
 	{

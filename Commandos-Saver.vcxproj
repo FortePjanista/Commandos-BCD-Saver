@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\application.cpp" />
+    <ClCompile Include="src\directoriesHandler.cpp" />
     <ClCompile Include="src\mainFrame.cpp" />
     <ClCompile Include="src\pickingFrame.cpp" />
     <ClCompile Include="src\pickingNameFrame.cpp" />
@@ -29,6 +30,7 @@
   <ItemGroup>
     <ClInclude Include="src\application.h" />
     <ClInclude Include="src\constants.h" />
+    <ClInclude Include="src\directoriesHandler.h" />
     <ClInclude Include="src\mainFrame.h" />
     <ClInclude Include="src\pickingFrame.h" />
     <ClInclude Include="src\pickingNameFrame.h" />
