@@ -30,16 +30,6 @@ void SaveFile::setName(std::string n)
 	name = n;
 }
 
-int SaveFile::getID()
-{
-	return id;
-}
-
-void SaveFile::setID(int n)
-{
-	id = n;
-}
-
 bool SaveFile::isEmpty()
 {
 	bool ret_value;

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include "constants.h"
+//This class represents a single .sav file or a save slot
 class SaveFile
 {
 private:
@@ -15,9 +16,6 @@ public:
 
 	std::string getName();
 	void setName(std::string name);
-
-	int getID();
-	void setID(int id);
 
 	bool isEmpty();
 
