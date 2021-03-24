@@ -12,12 +12,10 @@ private:
 	std::string name;
 
 public:
-	SaveFile(int id, std::string name);
+	SaveFile(int id, const std::string& name);
 
 	std::string getName();
-	void setName(std::string name);
-
-	bool isEmpty();
+	void setName(const std::string& name);
 
 	//Saves REDTMP file into this file
 	void save();
@@ -26,8 +24,9 @@ public:
 	//returns false if physical savefile is empty
 	bool load();
 
-	std::string getNameFromInfoFile();
-	void setNameIntoInfoFile();
+private:
+	// Checks whether .sav file is empty
+	bool isEmpty();
 };
 
 #endif //SAVE_FILE_H

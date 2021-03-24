@@ -1,6 +1,22 @@
 #include "saveFile.h"
 
-SaveFile::SaveFile(int _id, std::string _name) : id(_id), name(_name) {}
+SaveFile::SaveFile(int _id, const std::string& _name) : id(_id), name(_name) {}
+
+
+bool SaveFile::isEmpty()
+{
+	bool ret_value;
+
+	std::ifstream file;
+	file.open(g_savesPath + std::to_string(id) + ".sav");
+
+	ret_value = file.peek() == EOF;
+
+	file.close();
+
+	return ret_value;
+}
+
 
 //Saves REDTMP file into this file
 void SaveFile::save()
@@ -25,21 +41,7 @@ std::string SaveFile::getName()
 	return name;
 }
 
-void SaveFile::setName(std::string n)
+void SaveFile::setName(const std::string& n)
 {
 	name = n;
-}
-
-bool SaveFile::isEmpty()
-{
-	bool ret_value;
-
-	std::ifstream file;
-	file.open(g_savesPath + std::to_string(id) + ".sav");
-
-	ret_value = file.peek() == EOF;
-
-	file.close();
-	
-	return ret_value;
 }
