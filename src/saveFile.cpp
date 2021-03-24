@@ -1,6 +1,6 @@
 #include "saveFile.h"
 
-SaveFile::SaveFile(int _nr, std::string _info) : nr(_nr), info(_info) {}
+SaveFile::SaveFile(int _nr, std::string _name) : nr(_nr), name(_name) {}
 
 //Saves REDTMP file into this file
 void SaveFile::save()
@@ -20,14 +20,14 @@ bool SaveFile::load()
 	return true;
 }
 
-std::string SaveFile::getInfo()
+std::string SaveFile::getName()
 {
-	return info;
+	return name;
 }
 
-void SaveFile::setInfo(std::string n)
+void SaveFile::setName(std::string n)
 {
-	info = n;
+	name = n;
 }
 
 int SaveFile::getNr()

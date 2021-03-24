@@ -44,9 +44,6 @@
   <ItemGroup>
     <ResourceCompile Include="src\resource.rc" />
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="info.txt" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

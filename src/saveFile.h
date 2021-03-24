@@ -8,13 +8,13 @@ class SaveFile
 {
 private:
 	int nr;
-	std::string info;
+	std::string name;
 
 public:
-	SaveFile(int nr, std::string info);
+	SaveFile(int nr, std::string name);
 
-	std::string getInfo();
-	void setInfo(std::string info);
+	std::string getName();
+	void setName(std::string name);
 
 	int getNr();
 	void setNr(int nr);
@@ -28,8 +28,8 @@ public:
 	//returns false if physical savefile is empty
 	bool load();
 
-	std::string getInfoFromInfoFile();
-	void setInfoIntoInfoFile();
+	std::string getNameFromInfoFile();
+	void setNameIntoInfoFile();
 };
 
 #endif //SAVE_FILE_H

@@ -57,13 +57,13 @@ void SavesHandler::loadInfoIntoSaveFiles()
 	loadInfoFromInfoFile();
 	for (int i = 0; i < saveFilesAmount; i++)
 	{
-		saveFiles[i]->setInfo(info[i]);
+		saveFiles[i]->setName(info[i]);
 	}
 }
 
 std::string SavesHandler::getSaveFileInfo(int _fileID)
 {
-	return saveFiles[_fileID]->getInfo();
+	return saveFiles[_fileID]->getName();
 }
 
 void SavesHandler::createEmptyInfoFile()
@@ -93,7 +93,7 @@ void SavesHandler::save(int _fileID, std::string _newInfo)
 	saveInfoIntoInfoFile();
 
 	//update save file local variable
-	saveFiles[_fileID]->setInfo(info[_fileID]);
+	saveFiles[_fileID]->setName(info[_fileID]);
 }
 
 void SavesHandler::load(int _fileID)
