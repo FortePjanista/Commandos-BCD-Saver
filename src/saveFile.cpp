@@ -1,5 +1,5 @@
 #include "saveFile.h"
-#include "directoriesHandler.h"
+#include "pathsHandler.h"
 
 SaveFile::SaveFile(int _id, const std::string& _name) : id(_id), name(_name) {}
 
@@ -9,9 +9,9 @@ namespace
 	{
 		bool ret_value;
 
-		auto& dh = DirectoriesHandler::GetInstance();
+		auto& ph = PathsHandler::GetInstance();
 		std::ifstream file;
-		file.open(dh.g_savesPath + std::to_string(id) + ".sav");
+		file.open(ph.savesPath + std::to_string(id) + ".sav");
 
 		ret_value = file.peek() == EOF;
 
@@ -23,8 +23,8 @@ namespace
 
 void SaveFile::save()
 {
-	auto& dh = DirectoriesHandler::GetInstance();
-	std::string command = "type \"" + dh.g_REDTMPPath + "\" > \"" + dh.g_savesPath + std::to_string(id) + ".sav\"";
+	auto& ph = PathsHandler::GetInstance();
+	std::string command = "type \"" + ph.REDTMPPath + "\" > \"" + ph.savesPath + std::to_string(id) + ".sav\"";
 	
 	system(command.c_str());
 }
@@ -33,8 +33,8 @@ bool SaveFile::load()
 {
 	if (isEmpty(id)) return false;
 
-	auto& dh = DirectoriesHandler::GetInstance();
-	std::string command = "type \"" + dh.g_savesPath + std::to_string(id) + ".sav\" > \"" + dh.g_REDTMPPath + "\"";
+	auto& ph = PathsHandler::GetInstance();
+	std::string command = "type \"" + ph.savesPath + std::to_string(id) + ".sav\" > \"" + ph.REDTMPPath + "\"";
 	system(command.c_str());
 	return true;
 }
