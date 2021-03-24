@@ -29,8 +29,7 @@ PickingFrame::PickingFrame(wxWindow * parent):
 
 	SetMinSize(wxSize(150, 664));
 	SetMaxSize(wxSize(150, -1));
-	sh = std::make_shared<SavesHandler>(btnsCount);
-	sh->loadInfoIntoSaveFiles();
+	sh = std::make_shared<SavesHandler>();
 	pickingNameFrame = std::make_unique<PickingNameFrame>(this, sh);
 
 	SetIcon(wxICON(aaaa));
@@ -40,7 +39,7 @@ void PickingFrame::updateBtnNames()
 {
 	for (int i = 0; i < btnsCount; i++)
 	{
-		buttons[i]->SetLabel(sh->getSaveFileInfo(i));
+		buttons[i]->SetLabel(sh->getSaveFileName(i));
 	}
 }
 
@@ -60,7 +59,7 @@ void PickingFrame::OnButtonClicked(wxCommandEvent &evt)
 	if (mode == MODE_SAVE)
 	{
 		//get defaultName
-		pickingNameFrame->setDefaultName(sh->getSaveFileInfo(id));
+		pickingNameFrame->setDefaultName(sh->getSaveFileName(id));
 
 		//getFileId
 		pickingNameFrame->setLastSelectedBtn(id);

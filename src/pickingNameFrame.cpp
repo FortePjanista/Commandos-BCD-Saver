@@ -39,7 +39,7 @@ void PickingNameFrame::OnOKButtonClicked(wxCommandEvent & evt)
 	sh->save(lastSelectedBtn, newName.ToStdString());
 
 
-	sh->loadInfoIntoSaveFiles();
+	sh->loadNamesIntoSaveFiles();
 
 	//hide
 	Hide();

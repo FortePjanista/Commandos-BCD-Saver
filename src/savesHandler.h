@@ -5,24 +5,22 @@
 class SavesHandler
 {
 public:
-	SavesHandler(int nrOfSaveFiles);
-
-public:
-	int saveFilesAmount;
-	//std::array<std::unique_ptr<SaveFile>, SaveFilesCount> saveFiles;
-	SaveFile ** saveFiles;
-	std::string * info;
+	SavesHandler();
 
 private:
-	void loadInfoFromInfoFile();
-	void saveInfoIntoInfoFile();
+	constexpr static int saveFilesAmount = SAVE_FILES_COUNT;
+	std::unique_ptr<SaveFile> saveFiles[saveFilesAmount];
+	std::string names[saveFilesAmount];
+
+	void loadNamesFromInfoFile();
+	void saveNamesIntoInfoFile();
 	bool isInfoFileCreated();
 	void createEmptyInfoFile();
 
 public:
-	void loadInfoIntoSaveFiles();
-	std::string getSaveFileInfo(int fileID);
-	void save(int fileID, std::string newInfo);
+	void loadNamesIntoSaveFiles();
+	std::string getSaveFileName(int fileID);
+	void save(int fileID, std::string newName);
 	void load(int fileID);
 };
 

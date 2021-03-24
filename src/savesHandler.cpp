@@ -1,23 +1,23 @@
 #include "savesHandler.h"
 
-SavesHandler::SavesHandler(int _nrOfSaveFiles)
+SavesHandler::SavesHandler()
 {
-	saveFilesAmount = _nrOfSaveFiles;
-	saveFiles = saveFiles = new SaveFile * [saveFilesAmount];
 	for (int i = 0; i < saveFilesAmount; i++)
 	{
-		saveFiles[i] = new SaveFile(i, "Empty");
+		saveFiles[i] = std::make_unique<SaveFile>(i, "Empty");
 	}
 
-	info = new std::string[saveFilesAmount];
 	for (int i = 0; i < saveFilesAmount; i++)
 	{
-		info[i] = "Empty";
+		names[i] = "Empty";
 	}
-	if (!isInfoFileCreated()) createEmptyInfoFile();
+	if (!isInfoFileCreated())
+		createEmptyInfoFile();
+	else
+		loadNamesIntoSaveFiles();
 }
 
-void SavesHandler::loadInfoFromInfoFile()
+void SavesHandler::loadNamesFromInfoFile()
 {
 	std::ifstream file;
 	file.open(g_savesPath + g_InfoFileName);
@@ -26,18 +26,18 @@ void SavesHandler::loadInfoFromInfoFile()
 	for (int i = 0; i < saveFilesAmount; i++)
 	{
 		file.getline(buffer, 256);
-		info[i] = buffer;
+		names[i] = buffer;
 	}
 	file.close();
 }
 
-void SavesHandler::saveInfoIntoInfoFile()
+void SavesHandler::saveNamesIntoInfoFile()
 {
 	std::ofstream file;
 	file.open(g_savesPath + g_InfoFileName);
 	for (int i = 0; i < saveFilesAmount; i++)
 	{
-		file << info[i] << std::endl;
+		file << names[i] << std::endl;
 	}
 	file.close();
 }
@@ -52,16 +52,16 @@ bool SavesHandler::isInfoFileCreated()
 	return ret_value;
 }
 
-void SavesHandler::loadInfoIntoSaveFiles()
+void SavesHandler::loadNamesIntoSaveFiles()
 {
-	loadInfoFromInfoFile();
+	loadNamesFromInfoFile();
 	for (int i = 0; i < saveFilesAmount; i++)
 	{
-		saveFiles[i]->setName(info[i]);
+		saveFiles[i]->setName(names[i]);
 	}
 }
 
-std::string SavesHandler::getSaveFileInfo(int _fileID)
+std::string SavesHandler::getSaveFileName(int _fileID)
 {
 	return saveFiles[_fileID]->getName();
 }
@@ -82,21 +82,21 @@ void SavesHandler::createEmptyInfoFile()
 	file.close();
 }
 
-void SavesHandler::save(int _fileID, std::string _newInfo)
+void SavesHandler::save(int fileID, std::string newName)
 {
-	saveFiles[_fileID]->save();
+	saveFiles[fileID]->save();
 	
 	//set name
-	info[_fileID] = _newInfo;
+	names[fileID] = newName;
 
 	//update info file
-	saveInfoIntoInfoFile();
+	saveNamesIntoInfoFile();
 
 	//update save file local variable
-	saveFiles[_fileID]->setName(info[_fileID]);
+	saveFiles[fileID]->setName(names[fileID]);
 }
 
-void SavesHandler::load(int _fileID)
+void SavesHandler::load(int fileID)
 {
-	saveFiles[_fileID]->load();
+	saveFiles[fileID]->load();
 }
