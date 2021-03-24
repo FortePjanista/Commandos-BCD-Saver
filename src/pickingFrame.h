@@ -9,14 +9,14 @@
 class PickingFrame : public wxFrame
 {
 public:
-	PickingFrame(int btnsCount, wxWindow * parent);
+	PickingFrame(wxWindow * parent);
 
 private:
+	constexpr static unsigned int btnsCount = SAVE_FILES_COUNT;
 	int mode;
-	int btnsCount;
-	wxButton** buttons;
-	PickingNameFrame * pickingNameFrame;
-	SavesHandler * sh;
+	std::unique_ptr<wxButton> buttons[btnsCount];
+	std::unique_ptr<PickingNameFrame> pickingNameFrame;
+	std::shared_ptr<SavesHandler> sh;
 
 public:
 	void updateBtnNames();

@@ -13,7 +13,7 @@ MainFrame::MainFrame()
 	btn_save->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &MainFrame::OnSaveButtonClicked, this);
 	btn_load->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &MainFrame::OnLoadButtonClicked, this);
 
-	wxBoxSizer * sizer = new wxBoxSizer(wxVERTICAL);
+	wxBoxSizer * sizer = new wxBoxSizer(wxVERTICAL); // wxWidgets will deallocate it
 
 	sizer->SetItemMinSize(btn_save.get(), wxSize(100, 62));
 	sizer->SetItemMinSize(btn_load.get(), wxSize(100, 62));
@@ -29,7 +29,7 @@ MainFrame::MainFrame()
 	sizer->Layout();
 
 	//Picking Frame
-	pickingFrame = std::make_unique<PickingFrame>(10, this);
+	pickingFrame = std::make_unique<PickingFrame>(this);
 
 }
 

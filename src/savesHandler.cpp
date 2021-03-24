@@ -3,7 +3,7 @@
 SavesHandler::SavesHandler(int _nrOfSaveFiles)
 {
 	saveFilesAmount = _nrOfSaveFiles;
-	saveFiles = new SaveFile*[saveFilesAmount];
+	saveFiles = saveFiles = new SaveFile * [saveFilesAmount];
 	for (int i = 0; i < saveFilesAmount; i++)
 	{
 		saveFiles[i] = new SaveFile(i, "Empty");

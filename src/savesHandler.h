@@ -2,7 +2,6 @@
 #define SAVES_HANDLER_H
 
 #include "saveFile.h"
-
 class SavesHandler
 {
 public:
@@ -10,6 +9,7 @@ public:
 
 public:
 	int saveFilesAmount;
+	//std::array<std::unique_ptr<SaveFile>, SaveFilesCount> saveFiles;
 	SaveFile ** saveFiles;
 	std::string * info;
 

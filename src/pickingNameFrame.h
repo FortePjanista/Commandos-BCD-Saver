@@ -7,19 +7,18 @@
 class PickingNameFrame : public wxFrame
 {
 public:
-	PickingNameFrame(wxWindow * parent);
+	PickingNameFrame(wxWindow * parent, std::shared_ptr<SavesHandler> sh);
 
 private:
 	std::string defaultName;
-	wxTextCtrl * editBox;
-	wxButton * btn_OK;
-	SavesHandler * sh;
+	std::unique_ptr<wxTextCtrl> editBox;
+	std::unique_ptr<wxButton> btn_OK;
+	std::shared_ptr<SavesHandler> sh;
 	int lastSelectedBtn;
 
 public:
 	void setLastSelectedBtn(int lastSelectedBtn);
-	void setSavesHandler(SavesHandler * sh);
-	void setDefaultName(std::string defaultName);
+	void setDefaultName(const std::string &defaultName);
 	void OnOKButtonClicked(wxCommandEvent &evt);
 	void OnClose(wxCloseEvent &evt);
 };
