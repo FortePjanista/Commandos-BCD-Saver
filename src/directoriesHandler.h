@@ -14,7 +14,6 @@ public:
 	DirectoriesHandler& operator= (const DirectoriesHandler& other) = delete;
 
 public:
-	constexpr static int g_CharactersOfFileInfoPerFileSave = 10;
 	std::string g_REDTMPPath = "%userprofile%\\Documents\\Commandos - Beyond the call of duty\\OUTPUT\\REDTMP";
 	std::string g_savesPath = "saves\\";
 	std::string g_InfoFileName = "Info.dat";
