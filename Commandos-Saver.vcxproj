@@ -41,9 +41,6 @@
     <Image Include="src\icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\resource.aps" />
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="src\resource.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
