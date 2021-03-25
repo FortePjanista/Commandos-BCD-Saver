@@ -10,14 +10,17 @@ namespace
 	bool isEmpty(int id)
 	{
 		auto& ph = PathsHandler::GetInstance();
-		return fs::is_empty(ph.savesPath / std::to_string(id) / ".sav");
+		fs::path save(ph.savesPath / std::string(std::to_string(id) + ".sav"));
+		if (!fs::exists(save))
+			return true;
+		return fs::is_empty(save);
 	}
 }
 
 void SaveFile::save()
 {
 	auto& ph = PathsHandler::GetInstance();
-	fs::copy_file(ph.REDTMPPath, ph.savesPath / std::to_string(id) / ".sav");
+	fs::copy_file(ph.REDTMPPath, ph.savesPath / std::string(std::to_string(id) + ".sav"), fs::copy_option::overwrite_if_exists);
 }
 
 bool SaveFile::load()
@@ -25,7 +28,7 @@ bool SaveFile::load()
 	if (isEmpty(id)) return false;
 
 	auto& ph = PathsHandler::GetInstance();
-	fs::copy_file(ph.savesPath / std::to_string(id) / ".sav", ph.REDTMPPath);
+	fs::copy_file(ph.savesPath / std::string(std::to_string(id) + ".sav"), ph.REDTMPPath, fs::copy_option::overwrite_if_exists);
 	return true;
 }
 

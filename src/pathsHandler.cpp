@@ -1,7 +1,12 @@
 #include "pathsHandler.h"
 
+#include <cstdlib> // getenv()
+
+// Disables getenv("USERPROFILE") warning
+#pragma warning(disable : 4996)
+
 PathsHandler::PathsHandler():
-	REDTMPPath("%userprofile%/Documents/Commandos - Beyond the call of duty/OUTPUT/REDTMP"),
+	REDTMPPath(boost::filesystem::path(getenv("USERPROFILE")) / "Documents/Commandos - Beyond the call of duty/OUTPUT/REDTMP"),
 	savesPath("saves/"),
 	infoFileName("Info.dat")
 {}
