@@ -1,7 +1,7 @@
 #ifndef DIRECTORIES_HANDLER_H
 #define DIRECTORIES_HANDLER_H
 
-#include <string>
+#include <boost/filesystem.hpp>
 
 class PathsHandler
 {
@@ -14,9 +14,9 @@ public:
 	PathsHandler& operator= (const PathsHandler& other) = delete;
 
 public:
-	std::string REDTMPPath;
-	std::string savesPath;
-	std::string infoFileName;
+	boost::filesystem::path REDTMPPath;
+	boost::filesystem::path savesPath;
+	boost::filesystem::path infoFileName;
 };
 
 #endif // DIRECTORIES_HANDLER_H

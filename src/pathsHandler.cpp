@@ -1,8 +1,8 @@
 #include "pathsHandler.h"
 
 PathsHandler::PathsHandler():
-	REDTMPPath("%userprofile%\\Documents\\Commandos - Beyond the call of duty\\OUTPUT\\REDTMP"),
-	savesPath("saves\\"),
+	REDTMPPath("%userprofile%/Documents/Commandos - Beyond the call of duty/OUTPUT/REDTMP"),
+	savesPath("saves/"),
 	infoFileName("Info.dat")
 {}
 

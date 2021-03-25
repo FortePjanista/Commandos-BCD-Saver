@@ -1,28 +1,26 @@
 #include "savesHandler.h"
 #include "pathsHandler.h"
 
+namespace fs = boost::filesystem;
+
 namespace
 {
 	bool isInfoFileCreated()
 	{
-		bool ret_value;
 		auto& ph = PathsHandler::GetInstance();
-		std::ifstream file;
-		file.open(ph.savesPath + ph.infoFileName);
-		ret_value = file.is_open();
-		file.close();
-		return ret_value;
+		return fs::exists(ph.savesPath / ph.infoFileName);
 	}
 
 	void createEmptyInfoFile()
 	{
 		auto& ph = PathsHandler::GetInstance();
-		//Creating a saves folder
-		std::string command = "if not exist \"" + ph.savesPath + "\" mkdir \"" + ph.savesPath + "\"";
-		system(command.c_str());
 
-		std::ofstream file;
-		file.open(ph.savesPath + ph.infoFileName, std::ofstream::out);
+		//Create "saves" folder if doesn't exist
+		if (!fs::exists(ph.savesPath))
+			fs::create_directory(ph.savesPath);
+
+		fs::ofstream file;
+		file.open(ph.savesPath / ph.infoFileName);
 
 		for (int i = 0; i < SAVE_FILES_COUNT; i++)
 		{
@@ -49,8 +47,8 @@ void SavesHandler::loadNamesFromInfoFileIntoSaveFiles()
 {
 	auto& ph = PathsHandler::GetInstance();
 
-	std::ifstream file;
-	file.open(ph.savesPath + ph.infoFileName);
+	fs::ifstream file;
+	file.open(ph.savesPath / ph.infoFileName);
 
 	char buffer[256];
 	for (int i = 0; i < saveFilesAmount; i++)
@@ -65,8 +63,8 @@ void SavesHandler::saveNamesIntoInfoFile()
 {
 	auto& ph = PathsHandler::GetInstance();
 
-	std::ofstream file;
-	file.open(ph.savesPath + ph.infoFileName);
+	fs::ofstream file;
+	file.open(ph.savesPath / ph.infoFileName);
 	for (int i = 0; i < saveFilesAmount; i++)
 	{
 		file << saveFiles[i]->getName() << std::endl;
@@ -74,9 +72,9 @@ void SavesHandler::saveNamesIntoInfoFile()
 	file.close();
 }
 
-std::string SavesHandler::getSaveFileName(int _fileID)
+std::string SavesHandler::getSaveFileName(int fileID)
 {
-	return saveFiles[_fileID]->getName();
+	return saveFiles[fileID]->getName();
 }
 
 void SavesHandler::save(int fileID, const std::string &newName)
