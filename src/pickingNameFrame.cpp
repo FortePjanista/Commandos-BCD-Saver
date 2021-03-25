@@ -38,9 +38,6 @@ void PickingNameFrame::OnOKButtonClicked(wxCommandEvent & evt)
 	wxString newName = editBox->GetValue();
 	sh->save(lastSelectedBtn, newName.ToStdString());
 
-
-	sh->loadNamesIntoSaveFiles();
-
 	//hide
 	Hide();
 	GetParent()->GetParent()->Show();

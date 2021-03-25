@@ -9,18 +9,16 @@ public:
 
 private:
 	constexpr static int saveFilesAmount = SAVE_FILES_COUNT;
-	std::unique_ptr<SaveFile> saveFiles[saveFilesAmount];
-	std::string names[saveFilesAmount];
+	std::unique_ptr<SaveFile> saveFiles[SAVE_FILES_COUNT];
 
-	void loadNamesFromInfoFile();
+	//Updates info file
 	void saveNamesIntoInfoFile();
-	bool isInfoFileCreated();
-	void createEmptyInfoFile();
 
+	//Retrieves names from info file and assigns them to respective save files
+	void loadNamesFromInfoFileIntoSaveFiles();
 public:
-	void loadNamesIntoSaveFiles();
 	std::string getSaveFileName(int fileID);
-	void save(int fileID, std::string newName);
+	void save(int fileID, const std::string &newName);
 	void load(int fileID);
 };
 

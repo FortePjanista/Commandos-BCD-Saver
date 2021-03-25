@@ -8,8 +8,8 @@
 class SaveFile
 {
 private:
-	int id;
 	std::string name;
+	int id;
 
 public:
 	SaveFile(int id, const std::string& name);
@@ -17,7 +17,7 @@ public:
 	std::string getName();
 	void setName(const std::string& name);
 
-	//Saves REDTMP file into this file
+	//Saves REDTMP file into .sav file
 	void save();
 
 	//Loads this save file into REDTMP
