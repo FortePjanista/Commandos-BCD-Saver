@@ -7,7 +7,8 @@ class SavesHandler
 public:
 	SavesHandler();
 
-	void save(int fileID, const std::string &newName);
+	//Returns false if REDTMP doesn't exist
+	bool save(int fileID, const std::string &newName);
 	void load(int fileID);
 	std::string getSaveFileName(int fileID);
 

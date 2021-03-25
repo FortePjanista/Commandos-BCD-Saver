@@ -16,3 +16,13 @@ PathsHandler& PathsHandler::GetInstance()
 	static PathsHandler self;
 	return self;
 }
+
+bool PathsHandler::IsCommandosInstalled()
+{
+	return boost::filesystem::is_directory(boost::filesystem::path(getenv("USERPROFILE")) / "Documents/Commandos - Beyond the call of duty/");
+}
+
+bool PathsHandler::DoesREDTMPExist()
+{
+	return boost::filesystem::exists(REDTMPPath);
+}

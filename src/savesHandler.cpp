@@ -77,14 +77,19 @@ std::string SavesHandler::getSaveFileName(int fileID)
 	return saveFiles[fileID]->getName();
 }
 
-void SavesHandler::save(int fileID, const std::string &newName)
+bool SavesHandler::save(int fileID, const std::string &newName)
 {
+	auto& ph = PathsHandler::GetInstance();
+	if (!ph.DoesREDTMPExist())
+		return false;
+
 	saveFiles[fileID]->save();
 
 	saveFiles[fileID]->setName(newName);
 
 	//update info file
 	saveNamesIntoInfoFile();
+	return true;
 }
 
 void SavesHandler::load(int fileID)

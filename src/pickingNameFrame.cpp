@@ -36,7 +36,9 @@ void PickingNameFrame::OnOKButtonClicked(wxCommandEvent & evt)
 {
 	//save here
 	wxString newName = editBox->GetValue();
-	sh->save(lastSelectedBtn, newName.ToStdString());
+	bool res = sh->save(lastSelectedBtn, newName.ToStdString());
+	if(!res)
+		wxMessageBox(wxT("Someone in game has to hit ctrl + S before saving anywhere"), wxT("Info"), wxICON_INFORMATION);
 
 	//hide
 	Hide();

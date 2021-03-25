@@ -30,7 +30,6 @@ MainFrame::MainFrame()
 
 	//Picking Frame
 	pickingFrame = std::make_unique<PickingFrame>(this);
-
 }
 
 void MainFrame::OnSaveButtonClicked(wxCommandEvent &evt)
