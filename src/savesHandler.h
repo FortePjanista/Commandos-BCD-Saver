@@ -7,8 +7,13 @@ class SavesHandler
 public:
 	SavesHandler();
 
+	void save(int fileID, const std::string &newName);
+	void load(int fileID);
+	std::string getSaveFileName(int fileID);
+
 private:
 	constexpr static int saveFilesAmount = SAVE_FILES_COUNT;
+
 	std::unique_ptr<SaveFile> saveFiles[SAVE_FILES_COUNT];
 
 	//Updates info file
@@ -16,10 +21,6 @@ private:
 
 	//Retrieves names from info file and assigns them to respective save files
 	void loadNamesFromInfoFileIntoSaveFiles();
-public:
-	std::string getSaveFileName(int fileID);
-	void save(int fileID, const std::string &newName);
-	void load(int fileID);
 };
 
 #endif //SAVES_HANDLER_H

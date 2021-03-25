@@ -7,10 +7,6 @@
 //This class represents a single .sav file or a save slot
 class SaveFile
 {
-private:
-	std::string name;
-	int id;
-
 public:
 	SaveFile(int id, const std::string& name);
 
@@ -23,6 +19,10 @@ public:
 	//Loads this save file into REDTMP
 	//returns false if physical savefile is empty
 	bool load();
+
+private:
+	std::string name;
+	int id;
 };
 
 #endif //SAVE_FILE_H
