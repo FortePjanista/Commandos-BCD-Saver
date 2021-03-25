@@ -7,13 +7,13 @@ namespace
 {
 	bool isInfoFileCreated()
 	{
-		auto& ph = PathsHandler::GetInstance();
+		auto &ph = PathsHandler::GetInstance();
 		return fs::exists(ph.savesPath / ph.infoFileName);
 	}
 
 	void createEmptyInfoFile()
 	{
-		auto& ph = PathsHandler::GetInstance();
+		auto &ph = PathsHandler::GetInstance();
 
 		//Create "saves" folder if doesn't exist
 		if (!fs::exists(ph.savesPath))
@@ -45,7 +45,7 @@ SavesHandler::SavesHandler()
 
 void SavesHandler::loadNamesFromInfoFileIntoSaveFiles()
 {
-	auto& ph = PathsHandler::GetInstance();
+	auto &ph = PathsHandler::GetInstance();
 
 	fs::ifstream file;
 	file.open(ph.savesPath / ph.infoFileName);
@@ -61,7 +61,7 @@ void SavesHandler::loadNamesFromInfoFileIntoSaveFiles()
 
 void SavesHandler::saveNamesIntoInfoFile()
 {
-	auto& ph = PathsHandler::GetInstance();
+	auto &ph = PathsHandler::GetInstance();
 
 	fs::ofstream file;
 	file.open(ph.savesPath / ph.infoFileName);
@@ -79,7 +79,7 @@ std::string SavesHandler::getSaveFileName(int fileID)
 
 bool SavesHandler::save(int fileID, const std::string &newName)
 {
-	auto& ph = PathsHandler::GetInstance();
+	auto &ph = PathsHandler::GetInstance();
 	if (!ph.DoesREDTMPExist())
 		return false;
 
