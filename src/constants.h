@@ -5,4 +5,23 @@
 #define MODE_LOAD 1
 #define SAVE_FILES_COUNT 10
 
+#ifndef ERROR_SUCCESS
+#	define ERROR_SUCCESS 0
+#endif //ERROR_SUCCESS
+
+enum error_codes
+{
+	//ERROR_SUCCESS is defined by wxWidgets
+	ERROR_REDTMP_DOESNT_EXIST = 1,
+	ERROR_SAVE_FILE_DOESNT_EXIST,
+	ERROR_SAVE_FILE_IS_EMPTY
+};
+
+enum frames
+{
+	FRAME_MAIN,
+	FRAME_PICKING,
+	FRAME_PICKING_NAME
+};
+
 #endif //CONSTANTS_H

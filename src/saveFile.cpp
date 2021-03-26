@@ -1,34 +1,44 @@
 #include "saveFile.h"
+
 #include "pathsHandler.h"
-
+#include "constants.h"
+#include <iostream>
 using namespace boost::filesystem;
-
-namespace
-{
-	bool isEmpty(int id)
-	{
-		auto & paths = PathsHandler::Get();
-		path fullSavePath = paths.getSavePath(id);
-		if (!exists(fullSavePath)) return true;
-		return is_empty(fullSavePath);
-	}
-}
 
 SaveFile::SaveFile(int id, const std::string& name) : id(id), name(name)
 {}
 
-void SaveFile::save()
+int SaveFile::save()
 {
 	auto & paths = PathsHandler::Get();
+
+	if(!exists(paths.getREDTMPPath()))
+		return ERROR_REDTMP_DOESNT_EXIST;
+
+	if (!exists(paths.getSavePath(id)))
+		return ERROR_SAVE_FILE_DOESNT_EXIST;
+
 	copy_file(paths.getREDTMPPath(), paths.getSavePath(id), copy_option::overwrite_if_exists);
+
+	return ERROR_SUCCESS;
 }
 
-bool SaveFile::load()
+int SaveFile::load()
 {
-	if (isEmpty(id)) return false;
 	auto & paths = PathsHandler::Get();
+
+	if (!exists(paths.getREDTMPPath()))
+		return ERROR_REDTMP_DOESNT_EXIST;
+
+	if (!exists(paths.getSavePath(id)))
+		return ERROR_SAVE_FILE_DOESNT_EXIST;
+
+	if (is_empty(paths.getSavePath(id))) 
+		return ERROR_SAVE_FILE_IS_EMPTY;
+
 	copy_file(paths.getSavePath(id), paths.getREDTMPPath(), copy_option::overwrite_if_exists);
-	return true;
+
+	return ERROR_SUCCESS;
 }
 
 std::string SaveFile::getName()

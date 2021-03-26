@@ -1,6 +1,9 @@
 #ifndef SAVES_HANDLER_H
 #define SAVES_HANDLER_H
+
+#include <memory>
 #include "saveFile.h"
+#include "constants.h"
 
 class SavesHandler
 {
@@ -8,8 +11,8 @@ public:
 	SavesHandler();
 
 	//Returns false if REDTMP doesn't exist
-	bool save(int fileID, const std::string &newName);
-	void load(int fileID);
+	int save(int fileID, const std::string &newName);
+	int load(int fileID);
 	std::string getSaveFileName(int fileID);
 
 private:

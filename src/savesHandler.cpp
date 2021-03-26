@@ -5,25 +5,12 @@ using namespace boost::filesystem;
 
 namespace
 {
-	bool isInfoFileCreated()
+	void InitInfoFile(const path & path, const std::string & defaultSaveName)
 	{
-		auto & paths = PathsHandler::Get();
-		return exists(paths.getInfoFilePath());
-	}
-
-	void createEmptyInfoFile()
-	{
-		auto & paths = PathsHandler::Get();
-
-		//Create "saves" folder if doesn't exist
-		if (!exists(paths.getSavesDirectoryPath()))
-			create_directory(paths.getSavesDirectoryPath());
-
-		ofstream file;
-		file.open(paths.getInfoFilePath());
+		ofstream file(path);
 		for (int i = 0; i < SAVE_FILES_COUNT; i++)
 		{
-			file << "Empty" << std::endl;
+			file << defaultSaveName << std::endl;
 		}
 		file.close();
 	}
@@ -35,26 +22,32 @@ SavesHandler::SavesHandler()
 	{
 		saveFiles[i] = std::make_unique<SaveFile>(i, "Empty");
 	}
+	auto& paths = PathsHandler::Get();
+	path infoFilePath = paths.getInfoFilePath();
 
 	//Init directory and empty saves if not created yet (First app's launch)
-	if (!isInfoFileCreated())
-		createEmptyInfoFile();
+	if (!exists(infoFilePath))
+	{
+		create_directory(infoFilePath);
+		InitInfoFile(infoFilePath, "Empty");
+	}
 	else
+	{
 		loadNamesFromInfoFileIntoSaveFiles();
+	}
 }
 
 void SavesHandler::loadNamesFromInfoFileIntoSaveFiles()
 {
 	auto & paths = PathsHandler::Get();
 
-	ifstream file;
-	file.open(paths.getInfoFilePath());
+	ifstream file(paths.getInfoFilePath());
+	std::string line;
 
-	char buffer[256];
 	for (int i = 0; i < saveFilesAmount; i++)
 	{
-		file.getline(buffer, 256);
-		saveFiles[i]->setName(buffer);
+		std::getline(file, line);
+		saveFiles[i]->setName(line);
 	}
 	file.close();
 }
@@ -63,8 +56,7 @@ void SavesHandler::saveNamesIntoInfoFile()
 {
 	auto & paths = PathsHandler::Get();
 
-	ofstream file;
-	file.open(paths.getInfoFilePath());
+	ofstream file(paths.getInfoFilePath());
 	for (int i = 0; i < saveFilesAmount; i++)
 	{
 		file << saveFiles[i]->getName() << std::endl;
@@ -77,21 +69,24 @@ std::string SavesHandler::getSaveFileName(int fileID)
 	return saveFiles[fileID]->getName();
 }
 
-bool SavesHandler::save(int id, const std::string &newName)
+int SavesHandler::save(int id, const std::string &newName)
 {
 	auto & paths = PathsHandler::Get();
 
-	if (!exists(paths.getREDTMPPath())) return false;
+	int result = saveFiles[id]->save();
 
-	saveFiles[id]->save();
+	if (result != ERROR_SUCCESS)
+		return result;
+
 	saveFiles[id]->setName(newName);
 
 	//update info file
 	saveNamesIntoInfoFile();
-	return true;
+
+	return ERROR_SUCCESS;
 }
 
-void SavesHandler::load(int id)
+int SavesHandler::load(int id)
 {
-	saveFiles[id]->load();
+	return saveFiles[id]->load();
 }

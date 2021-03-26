@@ -1,53 +1,72 @@
 #include "pickingNameFrame.h"
 
-PickingNameFrame::PickingNameFrame(wxWindow * parent, std::shared_ptr<SavesHandler> _sh)
-	: wxFrame(parent, wxID_ANY, "Select name", parent->GetPosition(),
-							wxSize(150,100), wxCAPTION | wxCLOSE_BOX),
-	defaultName("Empty"), sh(_sh)
+#include "constants.h"
+
+PickingNameFrame::PickingNameFrame(wxWindow * parent, std::shared_ptr<SavesHandler> sh): 
+	wxFrame(parent, wxID_ANY, "Select name", parent->GetPosition(), wxSize(150,100), wxCAPTION | wxCLOSE_BOX),
+	editBox(std::make_unique<wxTextCtrl>(this, wxID_ANY, "Empty")),
+	btn_OK(std::make_unique<wxButton>(this, 11000, "OK")),
+	idToSave(0),
+	sh(sh)
 {
-	editBox = std::make_unique<wxTextCtrl>(this, wxID_ANY, defaultName);
-	btn_OK = std::make_unique<wxButton>(this, 11000, "OK");
-	btn_OK->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &PickingNameFrame::OnOKButtonClicked, this);
-	btn_OK->SetSize(wxSize(60, 30));
-
-	wxBoxSizer * sizer = new wxBoxSizer(wxVERTICAL); // Will be deleted by wxWidgets
-	sizer->Add(editBox.get(), 30, wxALIGN_CENTRE | wxSHAPED | wxFIXED_MINSIZE | wxRIGHT | wxLEFT, 0);
-	sizer->Add(btn_OK.get(), 30, wxALIGN_CENTRE | wxSHAPED | wxFIXED_MINSIZE | wxRIGHT | wxLEFT, 0);
-
-	SetSizer(sizer);
-	sizer->Layout();
-
-	Bind(wxEVT_CLOSE_WINDOW, &PickingNameFrame::OnClose, this);
-
+	// Set frame's icon
 	SetIcon(wxICON(aaaa));
-}
 
-void PickingNameFrame::setLastSelectedBtn(int _lastSelectedBtn)
-{
-	lastSelectedBtn = _lastSelectedBtn;
-}
+	// Init button
+	btn_OK->SetSize(wxSize(60, 30));
+	btn_OK->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &PickingNameFrame::OnOKButtonClicked, this);
 
-void PickingNameFrame::setDefaultName(const std::string &_defaultName)
-{
-	defaultName = _defaultName;
+	// Init box sizer
+	wxBoxSizer * sizer = new wxBoxSizer(wxVERTICAL); // Will be deleted by wxWidgets
+	int itemsProportion = 30;
+	int itemFlags = wxALIGN_CENTRE | wxSHAPED | wxFIXED_MINSIZE | wxRIGHT | wxLEFT;
+	sizer->Add(editBox.get(), itemsProportion, itemFlags);
+	sizer->Add(btn_OK.get(), itemsProportion, itemFlags);
+	sizer->Layout();
+	SetSizer(sizer);
+
+	// Bind events
+	Bind(wxEVT_CLOSE_WINDOW, &PickingNameFrame::OnClose, this);
 }
 
 void PickingNameFrame::OnOKButtonClicked(wxCommandEvent & evt)
 {
-	//save here
 	wxString newName = editBox->GetValue();
-	bool res = sh->save(lastSelectedBtn, newName.ToStdString());
-	if(!res)
+	int result = sh->save(idToSave, newName.ToStdString());
+	if(result == ERROR_REDTMP_DOESNT_EXIST)
+	{
 		wxMessageBox(wxT("Someone in game has to hit ctrl + S before saving anywhere"), wxT("Info"), wxICON_INFORMATION);
+	}
 
-	//hide
-	Hide();
-	GetParent()->GetParent()->Show();
+	ChangeFrame(FRAME_MAIN);
 	evt.Skip();
 }
 
 void PickingNameFrame::OnClose(wxCloseEvent & evt)
 {
-	GetParent()->Show();
+	ChangeFrame(FRAME_PICKING);
+}
+
+void PickingNameFrame::ChangeFrame(int newFrame)
+{
 	Hide();
+	switch (newFrame)
+	{
+	case FRAME_MAIN:
+		GetParent()->GetParent()->Show();
+		break;
+	case FRAME_PICKING:
+		GetParent()->Show();
+	}
+}
+
+void PickingNameFrame::setFileIDToSave(int newIdToSave)
+{
+	idToSave = newIdToSave;
+}
+
+void PickingNameFrame::setNameToEdit(const std::string& defaultName)
+{
+	editBox->SetValue(defaultName);
+	editBox->SetFocus();
 }

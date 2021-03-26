@@ -58,22 +58,30 @@ void PickingFrame::OnButtonClicked(wxCommandEvent &evt)
 	int id = evt.GetId() - 10010;
 	if (mode == MODE_SAVE)
 	{
-		//get defaultName
-		pickingNameFrame->setDefaultName(sh->getSaveFileName(id));
+		//Focus edit box
+		pickingNameFrame->setNameToEdit(sh->getSaveFileName(id));
 
-		//getFileId
-		pickingNameFrame->setLastSelectedBtn(id);
+		//Set file id to save
+		pickingNameFrame->setFileIDToSave(id);
 
-		//call rename frame
+		//Show Picking Name frame
 		Hide();
 		pickingNameFrame->SetPosition(GetPosition());
 		pickingNameFrame->Show();
-
-		//sh.save(id, getnewname) -> call it at the end of the execution of the above frame
 	}
 	else if(mode == MODE_LOAD)
 	{
-		sh->load(id);
+		int result = sh->load(id);
+		switch(result)
+		{
+		case ERROR_REDTMP_DOESNT_EXIST:
+			wxMessageBox(wxT("Someone in game has to hit ctrl + S before loading"), wxT("Info"), wxICON_INFORMATION);
+			return;
+		case ERROR_SAVE_FILE_IS_EMPTY:
+		case ERROR_SAVE_FILE_DOESNT_EXIST:
+			wxMessageBox(wxT("Selected slot is empty"), wxT("Info"), wxICON_INFORMATION);
+			return;
+		}
 		Hide();
 		GetParent()->Show();
 	}
@@ -81,6 +89,7 @@ void PickingFrame::OnButtonClicked(wxCommandEvent &evt)
 
 void PickingFrame::OnClose(wxCloseEvent & evt)
 {
+	//Go back to Main Frame
 	wxPoint pos = GetPosition();
 	pos.x -= 75;
 	GetParent()->SetPosition(pos);

@@ -1,9 +1,8 @@
 #ifndef SAVE_FILE_H
 #define SAVE_FILE_H
+
 #include <string>
-#include <iostream>
-#include <fstream>
-#include "constants.h"
+
 //This class represents a single .sav file or a save slot
 class SaveFile
 {
@@ -14,15 +13,18 @@ public:
 	void setName(const std::string& name);
 
 	//Saves REDTMP file into .sav file
-	void save();
+	//Returns one of error_codes
+	int save();
 
 	//Loads this save file into REDTMP
-	//returns false if physical savefile is empty
-	bool load();
+	//Returns one of error_codes
+	int load();
 
 private:
 	std::string name;
 	int id;
+
+	friend class SavesHandler;
 };
 
 #endif //SAVE_FILE_H
