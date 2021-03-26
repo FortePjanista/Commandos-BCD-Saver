@@ -6,10 +6,11 @@
 class PathsHandler
 {
 public:
-	static PathsHandler& GetInstance();
+	static PathsHandler& Get();
 
 	bool IsCommandosInstalled();
 	bool DoesREDTMPExist();
+	boost::filesystem::path getSavePath(int id);
 
 	boost::filesystem::path REDTMPPath;
 	boost::filesystem::path savesPath;

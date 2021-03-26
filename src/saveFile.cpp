@@ -1,34 +1,32 @@
 #include "saveFile.h"
 #include "pathsHandler.h"
 
-namespace fs = boost::filesystem;
-
-SaveFile::SaveFile(int _id, const std::string& _name) : id(_id), name(_name) {}
+namespace bf = boost::filesystem;
 
 namespace
 {
 	bool isEmpty(int id)
 	{
-		auto &ph = PathsHandler::GetInstance();
-		fs::path save(ph.savesPath / std::string(std::to_string(id) + ".sav"));
-		if (!fs::exists(save))
-			return true;
-		return fs::is_empty(save);
+		auto & paths = PathsHandler::GetInstance();
+		bf::path fullSavePath = paths.getSavePath(id);
+		if (!bf::exists(fullSavePath)) return true;
+		return bf::is_empty(fullSavePath);
 	}
 }
 
+SaveFile::SaveFile(int _id, const std::string& _name) : id(_id), name(_name) {}
+
 void SaveFile::save()
 {
-	auto &ph = PathsHandler::GetInstance();
-	fs::copy_file(ph.REDTMPPath, ph.savesPath / std::string(std::to_string(id) + ".sav"), fs::copy_option::overwrite_if_exists);
+	auto & paths = PathsHandler::GetInstance();
+	bf::copy_file(paths.REDTMPPath, paths.getSavePath(id), bf::copy_option::overwrite_if_exists);
 }
 
 bool SaveFile::load()
 {
 	if (isEmpty(id)) return false;
-
-	auto &ph = PathsHandler::GetInstance();
-	fs::copy_file(ph.savesPath / std::string(std::to_string(id) + ".sav"), ph.REDTMPPath, fs::copy_option::overwrite_if_exists);
+	auto & paths = PathsHandler::GetInstance();
+	bf::copy_file(paths.getSavePath(id), paths.REDTMPPath, bf::copy_option::overwrite_if_exists);
 	return true;
 }
 

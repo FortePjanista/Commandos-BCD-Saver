@@ -11,7 +11,7 @@ PathsHandler::PathsHandler():
 	infoFileName("Info.dat")
 {}
 
-PathsHandler& PathsHandler::GetInstance()
+PathsHandler& PathsHandler::Get()
 {
 	static PathsHandler self;
 	return self;
@@ -25,4 +25,9 @@ bool PathsHandler::IsCommandosInstalled()
 bool PathsHandler::DoesREDTMPExist()
 {
 	return boost::filesystem::exists(REDTMPPath);
+}
+
+boost::filesystem::path PathsHandler::getSavePath(int id)
+{
+	return boost::filesystem::path(savesPath / std::string(std::to_string(id) + ".sav"));
 }

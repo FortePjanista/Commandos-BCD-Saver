@@ -7,21 +7,20 @@ namespace
 {
 	bool isInfoFileCreated()
 	{
-		auto &ph = PathsHandler::GetInstance();
-		return fs::exists(ph.savesPath / ph.infoFileName);
+		auto & paths = PathsHandler::Get();
+		return fs::exists(paths.savesPath / paths.infoFileName);
 	}
 
 	void createEmptyInfoFile()
 	{
-		auto &ph = PathsHandler::GetInstance();
+		auto & paths = PathsHandler::Get();
 
 		//Create "saves" folder if doesn't exist
-		if (!fs::exists(ph.savesPath))
-			fs::create_directory(ph.savesPath);
+		if (!fs::exists(paths.savesPath))
+			fs::create_directory(paths.savesPath);
 
 		fs::ofstream file;
-		file.open(ph.savesPath / ph.infoFileName);
-
+		file.open(paths.savesPath / paths.infoFileName);
 		for (int i = 0; i < SAVE_FILES_COUNT; i++)
 		{
 			file << "Empty" << std::endl;
@@ -45,10 +44,10 @@ SavesHandler::SavesHandler()
 
 void SavesHandler::loadNamesFromInfoFileIntoSaveFiles()
 {
-	auto &ph = PathsHandler::GetInstance();
+	auto & paths = PathsHandler::Get();
 
 	fs::ifstream file;
-	file.open(ph.savesPath / ph.infoFileName);
+	file.open(paths.savesPath / paths.infoFileName);
 
 	char buffer[256];
 	for (int i = 0; i < saveFilesAmount; i++)
@@ -61,10 +60,10 @@ void SavesHandler::loadNamesFromInfoFileIntoSaveFiles()
 
 void SavesHandler::saveNamesIntoInfoFile()
 {
-	auto &ph = PathsHandler::GetInstance();
+	auto & paths = PathsHandler::Get();
 
 	fs::ofstream file;
-	file.open(ph.savesPath / ph.infoFileName);
+	file.open(paths.savesPath / paths.infoFileName);
 	for (int i = 0; i < saveFilesAmount; i++)
 	{
 		file << saveFiles[i]->getName() << std::endl;
@@ -79,8 +78,8 @@ std::string SavesHandler::getSaveFileName(int fileID)
 
 bool SavesHandler::save(int fileID, const std::string &newName)
 {
-	auto &ph = PathsHandler::GetInstance();
-	if (!ph.DoesREDTMPExist())
+	auto & paths = PathsHandler::Get();
+	if (!paths.DoesREDTMPExist())
 		return false;
 
 	saveFiles[fileID]->save();
