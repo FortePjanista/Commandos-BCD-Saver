@@ -28,7 +28,7 @@ SavesHandler::SavesHandler()
 	//Init directory and empty saves if not created yet (First app's launch)
 	if (!exists(infoFilePath))
 	{
-		create_directory(infoFilePath);
+		create_directory(paths.getSavesDirectoryPath());
 		InitInfoFile(infoFilePath, "Empty");
 	}
 	else

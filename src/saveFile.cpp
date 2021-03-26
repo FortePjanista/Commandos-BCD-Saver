@@ -16,9 +16,6 @@ int SaveFile::save()
 	if(!exists(paths.getREDTMPPath()))
 		return ERROR_REDTMP_DOESNT_EXIST;
 
-	if (!exists(paths.getSavePath(id)))
-		return ERROR_SAVE_FILE_DOESNT_EXIST;
-
 	copy_file(paths.getREDTMPPath(), paths.getSavePath(id), copy_option::overwrite_if_exists);
 
 	return ERROR_SUCCESS;
