@@ -6,21 +6,23 @@
 class PathsHandler
 {
 public:
-	static PathsHandler& Get();
+	static PathsHandler & Get();
 
-	bool IsCommandosInstalled();
-	bool DoesREDTMPExist();
 	boost::filesystem::path getSavePath(int id);
+	boost::filesystem::path getREDTMPPath();
+	boost::filesystem::path getInfoFilePath();
+	boost::filesystem::path getSavesDirectoryPath();
+	boost::filesystem::path getCommandosUserDirectoryPath();
 
-	boost::filesystem::path REDTMPPath;
-	boost::filesystem::path savesPath;
-	boost::filesystem::path infoFileName;
-
-	PathsHandler(const PathsHandler& other) = delete;
-	PathsHandler& operator= (const PathsHandler& other) = delete;
+	PathsHandler(const PathsHandler & other) = delete;
+	PathsHandler & operator= (const PathsHandler & other) = delete;
 
 private:
 	PathsHandler();
+
+	boost::filesystem::path commandosUserDirectory;
+	boost::filesystem::path savesDirectory;
+	boost::filesystem::path infoFileName;
 };
 
 #endif // DIRECTORIES_HANDLER_H

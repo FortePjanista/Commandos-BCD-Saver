@@ -5,29 +5,41 @@
 // Disables getenv("USERPROFILE") warning
 #pragma warning(disable : 4996)
 
+using namespace boost::filesystem;
+
 PathsHandler::PathsHandler():
-	REDTMPPath(boost::filesystem::path(getenv("USERPROFILE")) / "Documents/Commandos - Beyond the call of duty/OUTPUT/REDTMP"),
-	savesPath("saves/"),
+	commandosUserDirectory(path(getenv("USERPROFILE")) / "Documents" / "Commandos - Beyond the call of duty/"),
+	savesDirectory("saves/"),
 	infoFileName("Info.dat")
 {}
 
-PathsHandler& PathsHandler::Get()
+PathsHandler &PathsHandler::Get()
 {
 	static PathsHandler self;
 	return self;
 }
 
-bool PathsHandler::IsCommandosInstalled()
+path PathsHandler::getSavePath(int id)
 {
-	return boost::filesystem::is_directory(boost::filesystem::path(getenv("USERPROFILE")) / "Documents/Commandos - Beyond the call of duty/");
+	return savesDirectory / std::string(std::to_string(id) + ".sav");
 }
 
-bool PathsHandler::DoesREDTMPExist()
+path PathsHandler::getREDTMPPath()
 {
-	return boost::filesystem::exists(REDTMPPath);
+	return commandosUserDirectory / "OUTPUT" / "REDTMP";
 }
 
-boost::filesystem::path PathsHandler::getSavePath(int id)
+path PathsHandler::getInfoFilePath()
 {
-	return boost::filesystem::path(savesPath / std::string(std::to_string(id) + ".sav"));
+	return savesDirectory / infoFileName;
+}
+
+path PathsHandler::getSavesDirectoryPath()
+{
+	return savesDirectory;
+}
+
+path PathsHandler::getCommandosUserDirectoryPath()
+{
+	return commandosUserDirectory;
 }

@@ -1,14 +1,14 @@
 #include "savesHandler.h"
 #include "pathsHandler.h"
 
-namespace fs = boost::filesystem;
+using namespace boost::filesystem;
 
 namespace
 {
 	bool isInfoFileCreated()
 	{
 		auto & paths = PathsHandler::Get();
-		return fs::exists(paths.savesPath / paths.infoFileName);
+		return exists(paths.getInfoFilePath());
 	}
 
 	void createEmptyInfoFile()
@@ -16,11 +16,11 @@ namespace
 		auto & paths = PathsHandler::Get();
 
 		//Create "saves" folder if doesn't exist
-		if (!fs::exists(paths.savesPath))
-			fs::create_directory(paths.savesPath);
+		if (!exists(paths.getSavesDirectoryPath()))
+			create_directory(paths.getSavesDirectoryPath());
 
-		fs::ofstream file;
-		file.open(paths.savesPath / paths.infoFileName);
+		ofstream file;
+		file.open(paths.getInfoFilePath());
 		for (int i = 0; i < SAVE_FILES_COUNT; i++)
 		{
 			file << "Empty" << std::endl;
@@ -36,6 +36,7 @@ SavesHandler::SavesHandler()
 		saveFiles[i] = std::make_unique<SaveFile>(i, "Empty");
 	}
 
+	//Init directory and empty saves if not created yet (First app's launch)
 	if (!isInfoFileCreated())
 		createEmptyInfoFile();
 	else
@@ -46,8 +47,8 @@ void SavesHandler::loadNamesFromInfoFileIntoSaveFiles()
 {
 	auto & paths = PathsHandler::Get();
 
-	fs::ifstream file;
-	file.open(paths.savesPath / paths.infoFileName);
+	ifstream file;
+	file.open(paths.getInfoFilePath());
 
 	char buffer[256];
 	for (int i = 0; i < saveFilesAmount; i++)
@@ -62,8 +63,8 @@ void SavesHandler::saveNamesIntoInfoFile()
 {
 	auto & paths = PathsHandler::Get();
 
-	fs::ofstream file;
-	file.open(paths.savesPath / paths.infoFileName);
+	ofstream file;
+	file.open(paths.getInfoFilePath());
 	for (int i = 0; i < saveFilesAmount; i++)
 	{
 		file << saveFiles[i]->getName() << std::endl;
@@ -76,22 +77,21 @@ std::string SavesHandler::getSaveFileName(int fileID)
 	return saveFiles[fileID]->getName();
 }
 
-bool SavesHandler::save(int fileID, const std::string &newName)
+bool SavesHandler::save(int id, const std::string &newName)
 {
 	auto & paths = PathsHandler::Get();
-	if (!paths.DoesREDTMPExist())
-		return false;
 
-	saveFiles[fileID]->save();
+	if (!exists(paths.getREDTMPPath())) return false;
 
-	saveFiles[fileID]->setName(newName);
+	saveFiles[id]->save();
+	saveFiles[id]->setName(newName);
 
 	//update info file
 	saveNamesIntoInfoFile();
 	return true;
 }
 
-void SavesHandler::load(int fileID)
+void SavesHandler::load(int id)
 {
-	saveFiles[fileID]->load();
+	saveFiles[id]->load();
 }

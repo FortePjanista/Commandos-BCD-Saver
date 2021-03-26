@@ -1,6 +1,9 @@
 #include "application.h"
-#include "mainFrame.h"
+
 #include "pathsHandler.h"
+#include "mainFrame.h"
+
+using namespace boost::filesystem;
 
 bool Application::OnInit()
 {
@@ -8,10 +11,14 @@ bool Application::OnInit()
 	mainFrame->Show();
 
 	auto & paths = PathsHandler::Get();
-	if (!paths.IsCommandosInstalled())
+	if (!exists(paths.getCommandosUserDirectoryPath()))
+	{
 		wxMessageBox(wxT("You don't have Commandos - Beyond the Enemy lines installed."), wxT("Warning"), wxICON_WARNING);
-	else if (!paths.DoesREDTMPExist())
+	}
+	else if (!exists(paths.getREDTMPPath()))
+	{
 		wxMessageBox(wxT("Someone in game has to hit ctrl + S before saving anywhere"), wxT("Info"), wxICON_INFORMATION);
+	}
 
 	return true;
 }
