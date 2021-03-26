@@ -4,17 +4,13 @@
 
 PickingNameFrame::PickingNameFrame(wxWindow * parent, std::shared_ptr<SavesHandler> sh): 
 	wxFrame(parent, wxID_ANY, "Select name", parent->GetPosition(), wxSize(150,100), wxCAPTION | wxCLOSE_BOX),
-	editBox(std::make_unique<wxTextCtrl>(this, wxID_ANY, "Empty")),
-	btn_OK(std::make_unique<wxButton>(this, 11000, "OK")),
+	editBox(std::make_unique<wxTextCtrl>(this, wxID_ANY, "Empty", wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER)),
+	btn_OK(std::make_unique<wxButton>(this, 11000, "OK", wxDefaultPosition, wxSize(60, 30))),
 	idToSave(0),
 	sh(sh)
 {
 	// Set frame's icon
 	SetIcon(wxICON(aaaa));
-
-	// Init button
-	btn_OK->SetSize(wxSize(60, 30));
-	btn_OK->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &PickingNameFrame::OnOKButtonClicked, this);
 
 	// Init box sizer
 	wxBoxSizer * sizer = new wxBoxSizer(wxVERTICAL); // Will be deleted by wxWidgets
@@ -22,11 +18,16 @@ PickingNameFrame::PickingNameFrame(wxWindow * parent, std::shared_ptr<SavesHandl
 	int itemFlags = wxALIGN_CENTRE | wxSHAPED | wxFIXED_MINSIZE | wxRIGHT | wxLEFT;
 	sizer->Add(editBox.get(), itemsProportion, itemFlags);
 	sizer->Add(btn_OK.get(), itemsProportion, itemFlags);
-	sizer->Layout();
+
+	//Set box sizer
 	SetSizer(sizer);
+	sizer->Layout();
 
 	// Bind events
 	Bind(wxEVT_CLOSE_WINDOW, &PickingNameFrame::OnClose, this);
+	btn_OK->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &PickingNameFrame::OnOKButtonClicked, this);
+	editBox->Bind(wxEVT_TEXT, &PickingNameFrame::OnTextChange, this);
+	editBox->Bind(wxEVT_TEXT_ENTER, &PickingNameFrame::OnEnterPress, this);
 }
 
 void PickingNameFrame::OnOKButtonClicked(wxCommandEvent & evt)
@@ -47,9 +48,25 @@ void PickingNameFrame::OnClose(wxCloseEvent & evt)
 	ChangeFrame(FRAME_PICKING);
 }
 
+void PickingNameFrame::OnTextChange(wxCommandEvent& evt)
+{
+	if (editBox->IsEmpty())
+		btn_OK->Disable();
+	else
+		btn_OK->Enable();
+	evt.Skip();
+}
+
+void PickingNameFrame::OnEnterPress(wxCommandEvent& evt)
+{
+	MSWClickButtonIfPossible(btn_OK.get());
+	evt.Skip();
+}
+
 void PickingNameFrame::ChangeFrame(int newFrame)
 {
 	Hide();
+
 	switch (newFrame)
 	{
 	case FRAME_MAIN:

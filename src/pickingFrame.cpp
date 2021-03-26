@@ -89,7 +89,7 @@ void PickingFrame::OnButtonClicked(wxCommandEvent &evt)
 
 void PickingFrame::OnClose(wxCloseEvent & evt)
 {
-	//Go back to Main Frame
+	//Show Main Frame
 	wxPoint pos = GetPosition();
 	pos.x -= 75;
 	GetParent()->SetPosition(pos);
