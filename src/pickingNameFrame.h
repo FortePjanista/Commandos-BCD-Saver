@@ -16,6 +16,7 @@ public:
 	void OnClose(wxCloseEvent &evt);
 	void OnTextChange(wxCommandEvent& evt);
 	void OnEnterPress(wxCommandEvent& evt);
+	void OnKeyDown(wxKeyEvent& evt);
 
 private:
 	std::unique_ptr<wxTextCtrl> editBox;

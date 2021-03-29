@@ -25,6 +25,7 @@ PickingNameFrame::PickingNameFrame(wxWindow * parent, std::shared_ptr<SavesHandl
 
 	// Bind events
 	Bind(wxEVT_CLOSE_WINDOW, &PickingNameFrame::OnClose, this);
+	Bind(wxEVT_CHAR_HOOK, &PickingNameFrame::OnKeyDown, this);
 	btn_OK->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &PickingNameFrame::OnOKButtonClicked, this);
 	editBox->Bind(wxEVT_TEXT, &PickingNameFrame::OnTextChange, this);
 	editBox->Bind(wxEVT_TEXT_ENTER, &PickingNameFrame::OnEnterPress, this);
@@ -38,7 +39,6 @@ void PickingNameFrame::OnOKButtonClicked(wxCommandEvent & evt)
 	{
 		wxMessageBox(wxT("Someone in game has to hit ctrl + S before saving anywhere"), wxT("Info"), wxICON_INFORMATION);
 	}
-
 	ChangeFrame(FRAME_MAIN);
 	evt.Skip();
 }
@@ -63,10 +63,16 @@ void PickingNameFrame::OnEnterPress(wxCommandEvent& evt)
 	evt.Skip();
 }
 
+void PickingNameFrame::OnKeyDown(wxKeyEvent& evt)
+{
+	if (evt.GetKeyCode() == WXK_ESCAPE)
+		ChangeFrame(FRAME_PICKING);
+	evt.Skip();
+}
+
 void PickingNameFrame::ChangeFrame(int newFrame)
 {
 	Hide();
-
 	switch (newFrame)
 	{
 	case FRAME_MAIN:

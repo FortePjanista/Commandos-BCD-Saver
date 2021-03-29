@@ -11,6 +11,7 @@ bool Application::OnInit()
 	mainFrame->Show();
 
 	auto & paths = PathsHandler::Get();
+
 	if (!exists(paths.getCommandosUserDirectoryPath()))
 	{
 		wxMessageBox(wxT("You don't have Commandos - Beyond the Enemy lines installed."), wxT("Warning"), wxICON_WARNING);
