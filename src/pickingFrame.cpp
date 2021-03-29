@@ -5,7 +5,7 @@
 
 PickingFrame::PickingFrame(wxWindow * parent)
 	: wxFrame(parent, wxID_ANY, "Select a slot", parent->GetPosition(), 
-							wxSize(150, 700), wxCAPTION | wxCLOSE_BOX),
+							wxSize(150, SAVE_FILES_COUNT * 70), wxCAPTION | wxCLOSE_BOX),
 	sh(std::make_shared<SavesHandler>()),
 	pickingNameFrame(std::make_unique<PickingNameFrame>(this, sh)),
 	mode(MODE_SAVE)
@@ -15,10 +15,6 @@ PickingFrame::PickingFrame(wxWindow * parent)
 
 	//Bind events
 	Bind(wxEVT_CLOSE_WINDOW, &PickingFrame::OnClose, this);
-
-
-	//SetMinSize(wxSize(150, 664));
-	//SetMaxSize(wxSize(150, -1));
 
 	SetIcon(wxICON(aaaa));
 }
@@ -37,9 +33,7 @@ void PickingFrame::InitBoxSizer()
 	wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL); // <- Will be deleted by wxWidgets
 	for (int i = 0; i < btnsCount; i++)
 	{
-		sizer->SetItemMinSize(buttons[i].get(), wxSize(100, 62));
 		sizer->Add(buttons[i].get(), 30, wxALIGN_CENTRE | wxSHAPED | wxFIXED_MINSIZE | wxRIGHT | wxLEFT, 20);
-		sizer->SetItemMinSize(buttons[i].get(), wxSize(120, 60));
 	}
 	sizer->Layout();
 	this->SetSizer(sizer);
