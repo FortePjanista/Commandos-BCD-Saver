@@ -2,7 +2,8 @@
 #define PICKINGNAMEFRAME_H
 
 #include "wx/wx.h"
-#include "savesHandler.h"
+
+class SavesHandler;
 
 class PickingNameFrame : public wxFrame
 {
@@ -25,6 +26,7 @@ private:
 	int idToSave;
 
 	void ChangeFrame(int newFrame);
+	void InitBoxSizer();
 };
 
 #endif //PICKINGNAMEFRAME_H

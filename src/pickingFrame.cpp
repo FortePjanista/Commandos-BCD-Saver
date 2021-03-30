@@ -3,11 +3,15 @@
 #include "savesHandler.h"
 #include "pickingNameFrame.h"
 
+constexpr int PICKING_FRAME_X_SIZE = 150;
+constexpr int PICKING_FRAME_Y_SIZE = SAVE_FILES_COUNT * 70;
+constexpr int PICKING_FRAME_BUTTON_HORIZONTAL_MARGIN = 20;
+
 PickingFrame::PickingFrame(wxWindow * parent)
 	: wxFrame(parent, wxID_ANY, "Select a slot", parent->GetPosition(), 
-							wxSize(150, SAVE_FILES_COUNT * 70), wxCAPTION | wxCLOSE_BOX),
+							wxSize(PICKING_FRAME_X_SIZE, PICKING_FRAME_Y_SIZE), wxCAPTION | wxCLOSE_BOX),
 	sh(std::make_shared<SavesHandler>()),
-	pickingNameFrame(std::make_unique<PickingNameFrame>(this, sh)),
+	pickingNameFrame(new PickingNameFrame(this, sh)),
 	mode(MODE_SAVE)
 {
 	InitButtons();
@@ -33,9 +37,16 @@ void PickingFrame::InitBoxSizer()
 	wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL); // <- Will be deleted by wxWidgets
 	for (int i = 0; i < btnsCount; i++)
 	{
-		sizer->Add(buttons[i].get(), 30, wxALIGN_CENTRE | wxSHAPED | wxFIXED_MINSIZE | wxRIGHT | wxLEFT, 20);
+		// The proportion variable is responsible for knowing whether the sizer should also
+		// affect children of this frame. (0 - no, more than 0 - yes)
+		int changeChildrenAlso = 1;
+		sizer->Add(buttons[i].get(), changeChildrenAlso, wxALIGN_CENTRE | wxSHAPED | wxFIXED_MINSIZE | wxRIGHT | wxLEFT, PICKING_FRAME_BUTTON_HORIZONTAL_MARGIN);
 	}
+
+	// Calculate children postions
 	sizer->Layout();
+
+	// Add to this frame
 	this->SetSizer(sizer);
 }
 
@@ -43,6 +54,7 @@ void PickingFrame::updateBtnNames()
 {
 	for (int i = 0; i < btnsCount; i++)
 	{
+		// Update name
 		buttons[i]->SetLabel(sh->getSaveFileName(i));
 	}
 }
@@ -53,10 +65,10 @@ void PickingFrame::OnButtonClicked(wxCommandEvent &evt)
 	int id = evt.GetId() - 10010;
 	if (mode == MODE_SAVE)
 	{
-		//Focus edit box
+		// Focus on edit box
 		pickingNameFrame->setNameToEdit(sh->getSaveFileName(id));
 
-		//Pass file ID to be potentially saved later
+		// Pass file ID to be saved by PickingNameFrame later
 		pickingNameFrame->setFileIDToSave(id);
 
 		ChangeFrame(FRAME_PICKING_NAME);
@@ -102,9 +114,9 @@ void PickingFrame::ChangeFrame(int newFrame)
 	}
 }
 
-void PickingFrame::setMode(int _mode)
+void PickingFrame::setMode(int new_mode)
 {
-	mode = _mode;
+	mode = new_mode;
 }
 
 int PickingFrame::getMode()

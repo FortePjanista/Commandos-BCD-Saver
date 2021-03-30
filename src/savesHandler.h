@@ -2,15 +2,16 @@
 #define SAVES_HANDLER_H
 
 #include <memory>
-#include "saveFile.h"
-#include "constants.h"
+#include <string>
 
+#include "constants.h"
+#include "saveFile.h"
 class SavesHandler
 {
 public:
 	SavesHandler();
 
-	//Returns false if REDTMP doesn't exist
+	// Returns one of error_codes (constants.h)
 	int save(int fileID, const std::string &newName);
 	int load(int fileID);
 	std::string getSaveFileName(int fileID);
@@ -20,11 +21,11 @@ private:
 
 	std::unique_ptr<SaveFile> saveFiles[SAVE_FILES_COUNT];
 
-	//Updates info file
+	// Updates info file
 	void saveNamesIntoInfoFile();
 
-	//Retrieves names from info file and assigns them to respective save files
+	// Retrieves names from info file and assigns them to respective save files
 	void loadNamesFromInfoFileIntoSaveFiles();
 };
 
-#endif //SAVES_HANDLER_H
+#endif // SAVES_HANDLER_H

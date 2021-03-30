@@ -3,7 +3,7 @@
 
 #define MODE_SAVE 0
 #define MODE_LOAD 1
-#define SAVE_FILES_COUNT 8
+#define SAVE_FILES_COUNT 10
 
 #ifndef ERROR_SUCCESS
 #	define ERROR_SUCCESS 0

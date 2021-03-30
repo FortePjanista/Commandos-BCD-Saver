@@ -1,27 +1,26 @@
 #include "pickingNameFrame.h"
 
 #include "constants.h"
+#include "savesHandler.h"
 
-PickingNameFrame::PickingNameFrame(wxWindow * parent, std::shared_ptr<SavesHandler> sh): 
-	wxFrame(parent, wxID_ANY, "Select name", parent->GetPosition(), wxSize(150,100), wxCAPTION | wxCLOSE_BOX),
+constexpr int PICKING_NAME_FRAME_X_SIZE = 150;
+constexpr int PICKING_NAME_FRAME_Y_SIZE = 100;
+
+constexpr int BUTTON_X_SIZE = 60;
+constexpr int BUTTON_Y_SIZE = 30;
+
+PickingNameFrame::PickingNameFrame(wxWindow * parent, std::shared_ptr<SavesHandler> _sh) 
+	: wxFrame(parent, wxID_ANY, "Select name", parent->GetPosition(), wxSize(PICKING_NAME_FRAME_X_SIZE, PICKING_NAME_FRAME_Y_SIZE),
+																										wxCAPTION | wxCLOSE_BOX),
 	editBox(std::make_unique<wxTextCtrl>(this, wxID_ANY, "Empty", wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER)),
-	btn_OK(std::make_unique<wxButton>(this, 11000, "OK", wxDefaultPosition, wxSize(60, 30))),
+	btn_OK(std::make_unique<wxButton>(this, 11000, "OK", wxDefaultPosition, wxSize(BUTTON_X_SIZE, BUTTON_Y_SIZE))),
 	idToSave(0),
-	sh(sh)
+	sh(_sh)
 {
-	// Set frame's icon
 	SetIcon(wxICON(aaaa));
 
 	// Init box sizer
-	wxBoxSizer * sizer = new wxBoxSizer(wxVERTICAL); // Will be deleted by wxWidgets
-	int itemsProportion = 30;
-	int itemFlags = wxALIGN_CENTRE | wxSHAPED | wxFIXED_MINSIZE | wxRIGHT | wxLEFT;
-	sizer->Add(editBox.get(), itemsProportion, itemFlags);
-	sizer->Add(btn_OK.get(), itemsProportion, itemFlags);
-
-	//Set box sizer
-	SetSizer(sizer);
-	sizer->Layout();
+	InitBoxSizer();
 
 	// Bind events
 	Bind(wxEVT_CLOSE_WINDOW, &PickingNameFrame::OnClose, this);
@@ -73,7 +72,7 @@ void PickingNameFrame::OnKeyDown(wxKeyEvent& evt)
 void PickingNameFrame::ChangeFrame(int newFrame)
 {
 	Hide();
-	switch (newFrame)
+	switch(newFrame)
 	{
 	case FRAME_MAIN:
 		GetParent()->GetParent()->Show();
@@ -91,5 +90,25 @@ void PickingNameFrame::setFileIDToSave(int newIdToSave)
 void PickingNameFrame::setNameToEdit(const std::string& defaultName)
 {
 	editBox->SetValue(defaultName);
+
+	// Set focus on thos edit box to edit name instantly
 	editBox->SetFocus();
+}
+
+void PickingNameFrame::InitBoxSizer()
+{
+	wxBoxSizer * sizer = new wxBoxSizer(wxVERTICAL); // Will be deleted by wxWidgets
+
+	// The proportion variable is responsible for knowing whether the sizer should also
+	// affect children of this frame. (0 - no, more than 0 - yes)
+	int changeChildrenAlso = 1;
+	int itemFlags = wxALIGN_CENTRE | wxSHAPED | wxFIXED_MINSIZE | wxRIGHT | wxLEFT;
+	sizer->Add(editBox.get(), changeChildrenAlso, itemFlags);
+	sizer->Add(btn_OK.get(), changeChildrenAlso, itemFlags);
+
+	// Calculate children postions
+	sizer->Layout();
+
+	// Add to this frame
+	SetSizer(sizer);
 }
