@@ -104,6 +104,7 @@ void PickingFrame::ChangeFrame(int newFrame)
 	{
 		wxPoint pos = GetPosition();
 		pos.x -= 75;
+
 		GetParent()->SetPosition(pos);
 		GetParent()->Show();
 		break;

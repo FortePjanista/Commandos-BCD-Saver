@@ -19,11 +19,11 @@ namespace
 
 SavesHandler::SavesHandler()
 {
-	// Init SaveFile objects
-	for (int i = 0; i < saveFilesAmount; i++)
-	{
-		saveFiles[i] = std::make_unique<SaveFile>(i, "Empty");
-	}
+	//// Init SaveFile objects
+	//for (int i = 0; i < saveFilesAmount; i++)
+	//{
+	//	saveFiles[i] = SaveFile(i, "Empty");
+	//}
 
 	auto & paths = PathsHandler::Get();
 	path infoFilePath = paths.getInfoFilePath();
@@ -50,7 +50,7 @@ void SavesHandler::loadNamesFromInfoFileIntoSaveFiles()
 	for (int i = 0; i < saveFilesAmount; i++)
 	{
 		std::getline(file, line);
-		saveFiles[i]->setName(line);
+		saveFiles[i].setName(line);
 	}
 	file.close();
 }
@@ -62,28 +62,28 @@ void SavesHandler::saveNamesIntoInfoFile()
 	ofstream file(paths.getInfoFilePath());
 	for (int i = 0; i < saveFilesAmount; i++)
 	{
-		file << saveFiles[i]->getName() << std::endl;
+		file << saveFiles[i].getName() << std::endl;
 	}
 	file.close();
 }
 
 std::string SavesHandler::getSaveFileName(int fileID)
 {
-	return saveFiles[fileID]->getName();
+	return saveFiles[fileID].getName();
 }
 
 int SavesHandler::save(int id, const std::string &newName)
 {
 	auto & paths = PathsHandler::Get();
 
-	int result = saveFiles[id]->save();
+	int result = saveFiles[id].save();
 
 	// Stop execution on error
 	if (result != ERROR_SUCCESS)
 		return result;
 
 	// Update save file object on success
-	saveFiles[id]->setName(newName);
+	saveFiles[id].setName(newName);
 
 	// Update info.dat on success
 	saveNamesIntoInfoFile();
@@ -93,5 +93,5 @@ int SavesHandler::save(int id, const std::string &newName)
 
 int SavesHandler::load(int id)
 {
-	return saveFiles[id]->load();
+	return saveFiles[id].load();
 }

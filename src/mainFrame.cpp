@@ -8,12 +8,14 @@ constexpr int FRAME_SIZE_Y = 325;
 constexpr int BUTTONS_HORIZONTAL_MARGIN = 20;
 
 MainFrame::MainFrame()
-	: wxFrame(/* parent:   */	nullptr,
+	: wxFrame(
+			  /* parent:   */	nullptr,
 			  /* id:       */	wxID_ANY,
 			  /* name:     */	"Commandos - Saver",
 			  /* position: */	wxDefaultPosition,
 			  /* size:     */	wxSize(FRAME_SIZE_X, FRAME_SIZE_Y),
-			  /* flags:    */	wxCAPTION | wxMINIMIZE_BOX | wxCLOSE_BOX),
+			  /* flags:    */	wxCAPTION | wxMINIMIZE_BOX | wxCLOSE_BOX
+			  ),
 	btn_save(std::make_unique<wxButton>(this, 10000, "Save")),
 	btn_load(std::make_unique<wxButton>(this, 10001, "Load")),
 	pickingFrame(std::make_unique<PickingFrame>(this))
